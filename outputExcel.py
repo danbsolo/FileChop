@@ -1,10 +1,13 @@
 import openpyxl as opxl
 # import shutil
 import aiScript
-# import os
+from tkinter.filedialog import askopenfilename
+import os
 
-filenameSansExt = "testExcel"
-filename = filenameSansExt + ".xlsx"
+filename = askopenfilename(filetypes=[("Excel files", ".xlsx")])
+filenameSansExt, ext = os.path.splitext(filename)
+
+wb = opxl.Workbook()
 
 wb = opxl.load_workbook(filename = filename)
 ws0 = wb.active
@@ -31,5 +34,6 @@ for i in range(len(aiResponseList)):
 ws0.column_dimensions['A'].width = 20
 ws0.column_dimensions['B'].width = 20
 
-wb.save(filenameSansExt + "-Revised" + ".xlsx")
-# os.startfile(filenameCopy)
+filenameRevised = filenameSansExt + "-Revised" + ".xlsx"
+wb.save(filenameRevised)
+os.startfile(filenameRevised)
