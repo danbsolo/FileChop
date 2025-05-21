@@ -5,6 +5,7 @@ from tkinter.filedialog import askopenfilename
 import os
 
 filename = askopenfilename(filetypes=[("Excel files", ".xlsx")])
+if not filename: exit()
 filenameSansExt, ext = os.path.splitext(filename)
 
 wb = opxl.Workbook()

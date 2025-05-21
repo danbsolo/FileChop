@@ -3,6 +3,8 @@ from tkinter.filedialog import askopenfilename
 # import os
 
 filename = askopenfilename(filetypes=[("Excel files", ".xlsx")])
+if not filename: exit()
+
 wb = opxl.Workbook()
 
 ws0 = wb.active
