@@ -5,7 +5,7 @@ client = OpenAI()
 def queryAI(userInput):
     response = client.responses.create(
         model="gpt-4.1-nano",
-        instructions="You'll be given a Python list. Return a comma separated list of the values in the same order after fix any typos (including lack of apostrophe if applicable), and capitalize the first letter of each word.",
+        instructions="Insert an NBA analogy into any response you give.",
         input=userInput
     )
 
@@ -13,5 +13,6 @@ def queryAI(userInput):
 
 
 if __name__ == "__main__":
-    text = input("Say something to the AI model.:\n")
+    text = input("Say something to the AI model.: ")
     print()
+    print(queryAI(text))
