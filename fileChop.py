@@ -1,39 +1,76 @@
 import openpyxl as opxl
+from openpyxl.utils import column_index_from_string
 import aiScript
 from tkinter.filedialog import askopenfilename
 import os
 
-filename = askopenfilename(filetypes=[("Excel files", ".xlsx")])
-if not filename: exit()
-filenameSansExt, ext = os.path.splitext(filename)
+def main():
+    filename = askopenfilename(title="Select an EXCEL workbook",
+                               filetypes=[("Excel files", ".xlsx")])  # openpyxl also works on xlsm files, but let's just keep it simple for now
+    if not filename: exit()
+    filenameSansExt, ext = os.path.splitext(filename)
 
-wb = opxl.Workbook()
+    wb = opxl.Workbook()
+    wb = opxl.load_workbook(filename = filename)
+    
+    print("Available worksheets:")
+    for i in range(len(wb.sheetnames)):
+        print(f"\t{i} -- {wb.sheetnames[i]}")
+    print()
+    
+    # ERROR: If user inputs an index outside the range of the list.
+    selectedWsIndex = input("Select index number: ")
+    # ERROR: If user inputs a non-integer.
+    selectedWsIndex = int(selectedWsIndex)
+    selWs = wb[wb.sheetnames[selectedWsIndex]]
+    print(f"You picked '{selWs.title}'")
+    print()
 
-wb = opxl.load_workbook(filename = filename)
-ws0 = wb.active
+    selectedColumnLetter = input("Select a column (from 'A' to 'XFD'): ")
+    selectedColumnLetter = selectedColumnLetter.strip().upper()
+    
+    colIndex = column_index_from_string(selectedColumnLetter)
+    # ERROR: If user inputs something outside the range A to XFD (1 - 16384)
+    print(f"Column '{selectedColumnLetter}' corresponds to index {colIndex}.")
+    print()
 
-# for row in ws0['A1':'A5']:
-#     for cell in row:
-#         print(cell.value)
+    cellsList = []
+    for row in selWs.iter_rows(min_row=1, max_row=selWs.max_row, min_col=colIndex, max_col=colIndex):
+        cellsList.append(row[0].value)
+        # rowValue = row[0].value
+        # if not rowValue: print()
+        # else: print(rowValue)
+    
+    # Use AI here
+    
+    return
 
-cellsList = []
-for row in ws0.iter_rows(min_row=0, max_col=1, max_row=10):
-    for cell in row:
-        if cell.value:
-            cellsList.append(cell.value)
+    # for row in ws0['A1':'A5']:
+    #     for cell in row:
+    #         print(cell.value)
 
-aiResponse = aiScript.queryAI(str(cellsList))
-print(aiResponse)
-aiResponseList = aiResponse.split(",")
-print(aiResponseList)
+    cellsList = []
+    for row in ws0.iter_rows(min_row=0, max_col=1, max_row=10):
+        for cell in row:
+            if cell.value:
+                cellsList.append(cell.value)
 
-for i in range(len(aiResponseList)):
-    aiResponseList[i] = aiResponseList[i].strip()
-    ws0[f'B{i+1}'] = aiResponseList[i]
+    aiResponse = aiScript.queryAI(str(cellsList))
+    print(aiResponse)
+    aiResponseList = aiResponse.split(",")
+    print(aiResponseList)
 
-ws0.column_dimensions['A'].width = 20
-ws0.column_dimensions['B'].width = 20
+    for i in range(len(aiResponseList)):
+        aiResponseList[i] = aiResponseList[i].strip()
+        ws0[f'B{i+1}'] = aiResponseList[i]
 
-filenameRevised = filenameSansExt + "-Revised" + ".xlsx"
-wb.save(filenameRevised)
-os.startfile(filenameRevised)
+    ws0.column_dimensions['A'].width = 20
+    ws0.column_dimensions['B'].width = 20
+
+    filenameRevised = filenameSansExt + "-Revised" + ".xlsx"
+    wb.save(filenameRevised)
+    os.startfile(filenameRevised)
+
+
+if __name__ == "__main__":
+    main()
