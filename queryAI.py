@@ -1,14 +1,19 @@
 from openai import OpenAI
+from pydantic import BaseModel
 client = OpenAI()
+
+class ParagraphList(BaseModel):
+    correctedParagraphs: list[str]
 
 def queryAI(userInput):
     with open("prompt.txt", "r", encoding="utf-8") as f:
         developerInstructions = f.read()
 
-    response = client.responses.create(
+    response = client.responses.parse(
         model="gpt-4.1-nano",
         instructions=developerInstructions,
-        input=userInput
+        input=userInput,
+        text_format=ParagraphList
     )
 
     return response

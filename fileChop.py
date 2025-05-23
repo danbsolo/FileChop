@@ -1,4 +1,5 @@
 import openpyxl as opxl
+import queryAI
 from openpyxl.utils import column_index_from_string
 from tkinter.filedialog import askopenfilename
 import os
@@ -34,14 +35,24 @@ def main():
     print()
 
     cellsList = []
+    # IMPROPER: The max_row attribute of a worksheet does not take the column into account. Cannot get max row by worksheet column.
     for row in selWs.iter_rows(min_row=1, max_row=selWs.max_row, min_col=colIndex, max_col=colIndex):
         cellsList.append(row[0].value)
         # rowValue = row[0].value
         # if not rowValue: print()
         # else: print(rowValue)
-    print(cellsList)
     
-    # Use AI here
+    print("List of values in this column:")
+    print(cellsList)
+    print()
+
+
+    paragraphList = queryAI.queryAI(str(cellsList)).output_parsed
+    for paragraph in paragraphList.correctedParagraphs:
+        if paragraph:
+            print(paragraph)
+        else:
+            print("\"\" ", end = "")
     
     return
 
