@@ -4,15 +4,15 @@ client = OpenAI()
 
 def queryAI(userInput):
     response = client.responses.create(
-        model="gpt-4.1-nano",
-        instructions="Insert an NBA analogy into any response you give.",
+        model="gpt-4.1",
         input=userInput
     )
 
-    return response.output_text
+    return response
 
 
 if __name__ == "__main__":
-    text = input("Say something to the AI model.: ")
+    text = input("Say something to the AI model: ")
     print()
-    print(queryAI(text))
+    response = queryAI(text)
+    print(response.output_text)
