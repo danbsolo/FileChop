@@ -1,5 +1,4 @@
 import openpyxl as opxl
-# import shutil
 import aiScript
 from tkinter.filedialog import askopenfilename
 import os
