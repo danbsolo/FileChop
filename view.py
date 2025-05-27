@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
+from tkinter import ttk
 import control
 import openpyxl as opxl
 
@@ -8,7 +9,7 @@ def view():
         control.start(
             excelPathVar.get(),
             wb,
-            selectedWs.get(),
+            worksheetCombobox.get(),
             inputColEntryVar.get(),
             outputColEntryVar.get(),
             firstRowVar.get(),
@@ -24,14 +25,10 @@ def view():
         
         excelPathVar.set(excelPath)
         wb = opxl.load_workbook(excelPath)
-        availableWorksheets = wb.sheetnames
 
-        # Update the dropdown menu accordingly
-        menu = worksheetDropdown["menu"]
-        menu.delete(0, "end")  # clear existing options
-        for ws in availableWorksheets:
-            menu.add_command(label=ws, command=lambda value=ws: selectedWs.set(value))
-        selectedWs.set(availableWorksheets[0])
+        # Update the combobox accordingly
+        worksheetCombobox.config(values=wb.sheetnames)
+        worksheetCombobox.set(wb.sheetnames[0])
 
     # style stuff
     fontType = "None"
@@ -61,7 +58,6 @@ def view():
 
     # data variables
     wb = None
-    availableWorksheets = [""]
 
     # var stuff
     excelPathVar = tk.StringVar(value="~~~")
@@ -69,17 +65,16 @@ def view():
     outputColEntryVar = tk.StringVar()
     firstRowVar = tk.IntVar(value=0)
     lastRowVar = tk.IntVar(value="")
-    selectedWs = tk.StringVar(value=availableWorksheets[0])
 
 
     ## core UI elements stuff
     #
     browseButton = tk.Button(frame1, text="Browse to Select", command=selectExcel, font=fontGeneral, width=rootWidth)
     excelPathLabel = tk.Label(frame1, textvariable=excelPathVar, font=fontSmall, anchor="e")
-    worksheetDropdown = tk.OptionMenu(frame1, selectedWs, *availableWorksheets)
+    worksheetCombobox = ttk.Combobox(frame1, state="readonly")
     browseButton.pack()
     excelPathLabel.pack()
-    worksheetDropdown.pack()
+    worksheetCombobox.pack()
 
     #
     inputColLabel = tk.Label(frame2, text="Input column: ", font=fontGeneral)
