@@ -40,7 +40,7 @@ def view():
     root = tk.Tk()
     root.title("FileChop")
     rootWidth = 300
-    rootHeight = 400
+    rootHeight = 215
     root.geometry("{}x{}".format(rootWidth, rootHeight))
     root.resizable(0, 0)
 

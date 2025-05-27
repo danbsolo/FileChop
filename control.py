@@ -6,7 +6,8 @@ def start(excelPath, wb, wsName, inColLetter, outColLetter, firstRow, lastRow):
     print(f"Working on col {inColLetter} from rows {firstRow} to {lastRow}, outputting to col {outColLetter}, for worksheet {wsName} in {excelPath}")
     print()
 
-    filenameSansExt, ext = os.path.splitext(excelPath)
+    baseFilename = os.path.basename(excelPath)
+    filenameSansExt, ext = os.path.splitext(baseFilename)
     ws = wb[wsName]
     inColIndex = column_index_from_string(inColLetter)
     outColIndex = column_index_from_string(outColLetter)
