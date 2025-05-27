@@ -8,7 +8,7 @@ def view():
     def launchControllerWorker():
         control.start(
             excelPathVar.get(),
-            wb,
+            opxl.load_workbook(excelPathVar.get()),
             worksheetCombobox.get(),
             inputColEntryVar.get(),
             outputColEntryVar.get(),
@@ -63,7 +63,7 @@ def view():
     excelPathVar = tk.StringVar(value="~~~")
     inputColEntryVar = tk.StringVar()
     outputColEntryVar = tk.StringVar()
-    firstRowVar = tk.IntVar(value=0)
+    firstRowVar = tk.IntVar(value=1)
     lastRowVar = tk.IntVar(value="")
 
 
