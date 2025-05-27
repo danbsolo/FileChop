@@ -2,7 +2,6 @@ import openpyxl as opxl
 import queryAI
 from openpyxl.utils import column_index_from_string
 from tkinter.filedialog import askopenfilename
-import tkinter as tk
 import os
 
 def main():
