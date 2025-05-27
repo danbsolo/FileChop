@@ -34,9 +34,16 @@ def main():
     print(f"Column '{selectedColumnLetter}' corresponds to index {colIndex}.")
     print()
 
+    selectedFirstRow = int(input("Select first row: "))
+    selectedLastRow = int(input("Select last row (inclusive): "))
+    print(f"Ranging from rows {selectedFirstRow} to {selectedLastRow} ({selectedLastRow - selectedFirstRow +1} items).")
+    print()
+
+
+
     cellsList = []
     # IMPROPER: The max_row attribute of a worksheet does not take the column into account. Cannot get max row by worksheet column.
-    for row in selWs.iter_rows(min_row=1, max_row=selWs.max_row, min_col=colIndex, max_col=colIndex):
+    for row in selWs.iter_rows(min_row=selectedFirstRow, max_row=selectedLastRow, min_col=colIndex, max_col=colIndex):
         cellsList.append(row[0].value)
         # rowValue = row[0].value
         # if not rowValue: print()
@@ -52,7 +59,7 @@ def main():
         if paragraph:
             print(paragraph)
         else:
-            print("\"\" ", end = "")
+            print("\"\" ")
     
     return
 
