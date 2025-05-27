@@ -2,6 +2,7 @@ import openpyxl as opxl
 import queryAI
 from openpyxl.utils import column_index_from_string
 from tkinter.filedialog import askopenfilename
+import tkinter as tk
 import os
 
 def main():
@@ -36,7 +37,8 @@ def main():
 
     selectedFirstRow = int(input("Select first row: "))
     selectedLastRow = int(input("Select last row (inclusive): "))
-    print(f"Ranging from rows {selectedFirstRow} to {selectedLastRow} ({selectedLastRow - selectedFirstRow +1} items).")
+    numItems = selectedLastRow - selectedFirstRow + 1
+    print(f"Ranging from rows {selectedFirstRow} to {selectedLastRow} ({numItems} items).")
     print()
 
 
@@ -55,24 +57,25 @@ def main():
 
 
     paragraphList = queryAI.queryAI(str(cellsList)).output_parsed
-    for paragraph in paragraphList.correctedParagraphs:
-        if paragraph:
-            print(paragraph)
-        else:
-            print("\"\" ")
+    # for paragraph in paragraphList.correctedParagraphs:
+    #     if paragraph:
+    #         print(paragraph)
+    #     else:
+    #         print("\"\" ")
+    
+    i = 0
+    nextColIndex = colIndex + 1
+    for cellRow in range(selectedFirstRow, selectedLastRow+1):
+        selWs.cell(row=cellRow, column=nextColIndex, value=paragraphList.correctedParagraphs[i])
+        i += 1
+
+
+    revisedFilename = f"{filenameSansExt}-Revised{ext}"
+    wb.save(revisedFilename)
+    os.startfile(revisedFilename)
     
     return
 
-    # test
-    # # for row in ws0['A1':'A5']:
-    # #     for cell in row:
-    # #         print(cell.value)
-
-    # cellsList = []
-    # for row in ws0.iter_rows(min_row=0, max_col=1, max_row=10):
-    #     for cell in row:
-    #         if cell.value:
-    #             cellsList.append(cell.value)
 
     # aiResponse = aiScript.queryAI(str(cellsList))
     # print(aiResponse)
