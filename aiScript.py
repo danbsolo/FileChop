@@ -2,8 +2,8 @@ from openai import OpenAI
 from pydantic import BaseModel
 client = OpenAI()
 
-class ParagraphList(BaseModel):
-    correctedParagraphs: list[str]
+class FilenameList(BaseModel):
+    newFilenames: list[str]
 
 def queryAI(userInput):
     with open("prompt.txt", "r", encoding="utf-8") as f:
@@ -13,7 +13,7 @@ def queryAI(userInput):
         model="gpt-4.1-nano",
         instructions=developerInstructions,
         input=userInput,
-        text_format=ParagraphList
+        text_format=FilenameList
     )
 
     return response

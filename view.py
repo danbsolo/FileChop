@@ -4,11 +4,13 @@ from tkinter import ttk
 import control
 import openpyxl as opxl
 
-def view():
+
+
+def launchView():
     def launchControllerWorker():
-        control.start(
+        control.launchController(
             excelPathVar.get(),
-            opxl.load_workbook(excelPathVar.get()),
+            wb,
             worksheetCombobox.get(),
             inputColEntryVar.get(),
             outputColEntryVar.get(),
@@ -24,11 +26,19 @@ def view():
         if not excelPath: return
         
         excelPathVar.set(excelPath)
+
+        nonlocal wb
         wb = opxl.load_workbook(excelPath)
 
         # Update the combobox accordingly
         worksheetCombobox.config(values=wb.sheetnames)
         worksheetCombobox.set(wb.sheetnames[0])
+        worksheetCombobox.event_generate("<<ComboboxSelected>>") # or just call the function directly
+
+
+    def updateMaxRow(_):
+        lastRowVar.set(wb[worksheetCombobox.get()].max_row)
+
 
     # style stuff
     fontType = "None"
@@ -56,16 +66,15 @@ def view():
     frame5 = tk.Frame(root)
     frame5.pack()
 
-    # data variables
-    wb = None
-
     # var stuff
     excelPathVar = tk.StringVar(value="~~~")
-    inputColEntryVar = tk.StringVar()
-    outputColEntryVar = tk.StringVar()
-    firstRowVar = tk.IntVar(value=1)
+    inputColEntryVar = tk.StringVar(value="B")
+    outputColEntryVar = tk.StringVar(value="E")
+    firstRowVar = tk.IntVar(value=2)
     lastRowVar = tk.IntVar(value="")
 
+    # data variables
+    wb = None
 
     ## core UI elements stuff
     #
@@ -100,10 +109,7 @@ def view():
     executeButton = tk.Button(frame5, text="Execute", command=launchControllerWorker, font=fontGeneral)
     executeButton.pack()
 
+    #
+    worksheetCombobox.bind("<<ComboboxSelected>>", updateMaxRow)
 
     root.mainloop()
-
-
-
-if __name__ == "__main__":
-    view()
