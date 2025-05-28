@@ -39,6 +39,14 @@ def launchView():
     def updateMaxRow(_):
         lastRowVar.set(wb[worksheetCombobox.get()].max_row)
 
+    def closeWindow():
+        # For now, just force close. Once main thread and GUI thread are separated, can go back to this.
+        exit()
+        # if currentState.get() == 102:
+        #     exit()  # Force close
+        # else:
+        #     root.destroy()
+
 
     # style stuff
     fontType = "None"
@@ -109,7 +117,8 @@ def launchView():
     executeButton = tk.Button(frame5, text="Execute", command=launchControllerWorker, font=fontGeneral)
     executeButton.pack()
 
-    #
+    # Bindings
     worksheetCombobox.bind("<<ComboboxSelected>>", updateMaxRow)
+    root.protocol("WM_DELETE_WINDOW", closeWindow)
 
     root.mainloop()

@@ -5,12 +5,9 @@ client = OpenAI()
 class FilenameList(BaseModel):
     newFilenames: list[str]
 
-def queryAI(userInput):
-    with open("prompt.txt", "r", encoding="utf-8") as f:
-        developerInstructions = f.read()
-
+def queryAI(userInput, developerInstructions=None):
     response = client.responses.parse(
-        model="gpt-4.1-nano",
+        model="gpt-4.1",
         instructions=developerInstructions,
         input=userInput,
         text_format=FilenameList
