@@ -1,6 +1,7 @@
 from aiProcedureFunctions import *
 from aiProcedureClass import *
 
+RESULTS_DIRECTORY = "File-Chop-Results"
 EXCEED_CHARACTER_LIMIT = "Exceed Character Limit"
 TYPO_FIXER = "Typo Fixer"
 
@@ -10,6 +11,6 @@ AI_PROCEDURES = {
 }
 
 AI_PROCEDURES_DISPLAY = [
+    TYPO_FIXER,
     EXCEED_CHARACTER_LIMIT,
-    TYPO_FIXER
 ]
