@@ -3,6 +3,7 @@ from tkinter.filedialog import askopenfilename
 from tkinter import ttk
 import control
 import openpyxl as opxl
+from defs import *
 
 
 
@@ -12,6 +13,7 @@ def launchView():
             excelPathVar.get(),
             wb,
             worksheetCombobox.get(),
+            aiProcedureCombobox.get(),
             inputColEntryVar.get(),
             outputColEntryVar.get(),
             firstRowVar.get(),
@@ -39,8 +41,9 @@ def launchView():
     def updateMaxRow(_):
         lastRowVar.set(wb[worksheetCombobox.get()].max_row)
 
+
     def closeWindow():
-        # For now, just force close. Once main thread and GUI thread are separated, can go back to this.
+        # For now, just force close. Once main thread is partitioned with a GUI thread, can go back to this.
         exit()
         # if currentState.get() == 102:
         #     exit()  # Force close
@@ -58,26 +61,21 @@ def launchView():
     root = tk.Tk()
     root.title("FileChop")
     rootWidth = 300
-    rootHeight = 215
+    rootHeight = 250
     root.geometry("{}x{}".format(rootWidth, rootHeight))
     root.resizable(0, 0)
+    root.attributes('-topmost', True)  # keeps root window at top layer
 
-    # frame stuff
-    frame1 = tk.Frame(root)
-    frame1.pack()
-    frame2 = tk.Frame(root)
-    frame2.pack()
-    frame3 = tk.Frame(root)
-    frame3.pack()
-    frame4 = tk.Frame(root)
-    frame4.pack()
-    frame5 = tk.Frame(root)
-    frame5.pack()
+    # frame stuff        
+    frames = []
+    for i in range(5):
+        frames.append(tk.Frame(root, bd=0, relief=tk.SOLID))
+        frames[i].pack(padx=10, pady=3)  # fill="x", 
 
     # var stuff
     excelPathVar = tk.StringVar(value="~~~")
-    inputColEntryVar = tk.StringVar(value="B")
-    outputColEntryVar = tk.StringVar(value="E")
+    inputColEntryVar = tk.StringVar(value="A")
+    outputColEntryVar = tk.StringVar(value="B")
     firstRowVar = tk.IntVar(value=2)
     lastRowVar = tk.IntVar(value="")
 
@@ -86,35 +84,38 @@ def launchView():
 
     ## core UI elements stuff
     #
-    browseButton = tk.Button(frame1, text="Browse to Select", command=selectExcel, font=fontGeneral, width=rootWidth)
-    excelPathLabel = tk.Label(frame1, textvariable=excelPathVar, font=fontSmall, anchor="e")
-    worksheetCombobox = ttk.Combobox(frame1, state="readonly")
+    browseButton = tk.Button(frames[0], text="Browse to Select", command=selectExcel, font=fontGeneral, width=rootWidth)
+    excelPathLabel = tk.Label(frames[0], textvariable=excelPathVar, font=fontSmall, anchor="e")
+    worksheetCombobox = ttk.Combobox(frames[0], state="readonly")
+    aiProcedureCombobox = ttk.Combobox(frames[0], state="readonly", values=AI_PROCEDURES_DISPLAY)
+    aiProcedureCombobox.current(0)
     browseButton.pack()
     excelPathLabel.pack()
     worksheetCombobox.pack()
+    aiProcedureCombobox.pack()
 
     #
-    inputColLabel = tk.Label(frame2, text="Input column: ", font=fontGeneral)
-    inputColEntry = tk.Entry(frame2, textvariable=inputColEntryVar, font=fontSmall)
+    inputColLabel = tk.Label(frames[1], text="Input column: ", font=fontGeneral)
+    inputColEntry = tk.Entry(frames[1], textvariable=inputColEntryVar, font=fontSmall)
     inputColLabel.pack(side=tk.LEFT)
     inputColEntry.pack(side=tk.LEFT)
 
     #
-    outputColLabel = tk.Label(frame3, text="Output column: ", font=fontGeneral)
-    outputColEntry = tk.Entry(frame3, textvariable=outputColEntryVar, font=fontSmall)
+    outputColLabel = tk.Label(frames[2], text="Output column: ", font=fontGeneral)
+    outputColEntry = tk.Entry(frames[2], textvariable=outputColEntryVar, font=fontSmall)
     outputColLabel.pack(side=tk.LEFT)
     outputColEntry.pack(side=tk.LEFT)
 
     #
-    rowLabel = tk.Label(frame4, text="Row Range: ", font=fontGeneral)
-    firstRowEntry = tk.Entry(frame4, textvariable=firstRowVar, font=fontSmall, width=4)
-    lastRowEntry = tk.Entry(frame4, textvariable=lastRowVar, font=fontSmall, width=4)
+    rowLabel = tk.Label(frames[3], text="Row Range: ", font=fontGeneral)
+    firstRowEntry = tk.Entry(frames[3], textvariable=firstRowVar, font=fontSmall, width=4)
+    lastRowEntry = tk.Entry(frames[3], textvariable=lastRowVar, font=fontSmall, width=4)
     rowLabel.pack(side=tk.LEFT)
     firstRowEntry.pack(side=tk.LEFT)
     lastRowEntry.pack(side=tk.LEFT)
 
     #
-    executeButton = tk.Button(frame5, text="Execute", command=launchControllerWorker, font=fontGeneral)
+    executeButton = tk.Button(frames[4], text="Execute", command=launchControllerWorker, font=fontGeneral)
     executeButton.pack()
 
     # Bindings
