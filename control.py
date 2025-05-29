@@ -1,7 +1,7 @@
-import aiProcedureFunctions
 from openpyxl.utils import column_index_from_string
 import os
 from defs import *
+from aiScript import queryAI
 
 
 def launchController(excelPath, wb, wsName, aiProcedureName, inColLetter, outColLetter, firstRow, lastRow):
