@@ -35,10 +35,13 @@ def launchController(excelPath, wb, wsName, aiProcedureName, inColLetter, outCol
     if not inputList:
         return
 
-    # query AI
-    with open(f"prompts/{aiProcedureObject.promptFile}", "r", encoding="utf-8") as f:
-        developerInstructions = f.read()
-    outputList = queryAI(str(inputList), developerInstructions).output_parsed
+    # query AI (if a prompt was given)
+    if aiProcedureObject.promptFile:
+        with open(f"prompts/{aiProcedureObject.promptFile}", "r", encoding="utf-8") as f:
+            developerInstructions = f.read()
+        outputList = queryAI(str(inputList), developerInstructions).output_parsed
+    else:
+        outputList = None
 
     aiProcedureObject.mainFunction(inColIndex, outColIndex, firstRow, lastRow, inputList, outputList, ws)
 
