@@ -4,9 +4,8 @@ from procedureClass import *
 
 RESULTS_DIRECTORY = "File-Chop-Results"
 
-
-EXCEED_CHARACTER_LIMIT_SUGGESTER = "Exceed Character Limit Suggester (AI)"
-EXCEED_CHARACTER_LIMIT_MODIFIER = "Exceed Character Limit Modifier"
+EXCEED_CHARACTER_LIMIT_SUGGESTER = "File Rename Suggester (AI)"
+FILE_NINJA_MODIFIER = "File-Ninja Modifier"
 TYPO_FIXER = "Typo Fixer (AI)"
 
 
@@ -16,9 +15,9 @@ AI_PROCEDURES = {
         exceedCharacterLimitSuggesterFunction, 
         "pcFileRenamerPrompt.txt"),
     
-    EXCEED_CHARACTER_LIMIT_MODIFIER: Procedure(
-        EXCEED_CHARACTER_LIMIT_MODIFIER, 
-        exceedCharacterLimitModifierFunction),
+    FILE_NINJA_MODIFIER: Procedure(
+        FILE_NINJA_MODIFIER, 
+        fileNinjaModifierFunction),
     
     TYPO_FIXER: Procedure(
         TYPO_FIXER, 
@@ -27,7 +26,7 @@ AI_PROCEDURES = {
 }
 
 AI_PROCEDURES_DISPLAY = [
-    EXCEED_CHARACTER_LIMIT_MODIFIER,
+    FILE_NINJA_MODIFIER,
     TYPO_FIXER,
     EXCEED_CHARACTER_LIMIT_SUGGESTER,
 ]

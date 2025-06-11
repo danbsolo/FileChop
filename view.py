@@ -74,8 +74,8 @@ def launchView():
 
     # var stuff
     excelPathVar = tk.StringVar(value="~~~")
-    inputColEntryVar = tk.StringVar(value="A")
-    outputColEntryVar = tk.StringVar(value="B")
+    inputColEntryVar = tk.StringVar(value="B")
+    outputColEntryVar = tk.StringVar(value="E")
     firstRowVar = tk.IntVar(value=2)
     lastRowVar = tk.IntVar(value="")
 
