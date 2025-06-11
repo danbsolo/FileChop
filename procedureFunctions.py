@@ -17,7 +17,7 @@ def fileNinjaModifierFunction(inColIndex, outColIndex, firstRow, lastRow, inputL
     even if it wasn't actually modified."""
 
     # Always assumes the directory index is column 0
-    directoryColIndex = 0 # inColIndex -1
+    directoryColIndex = 1 # inColIndex -1
     # oldFilenameColIndex = inColIndex
     # newFilenameColIndex = outColIndex
 
